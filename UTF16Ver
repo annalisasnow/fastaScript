@@ -1,0 +1,29 @@
+#!/usr/local/bin/python
+# -*- coding: utf-16 -*-
+
+import os
+#OS - is a module, which helps using some OS functionalities
+
+myPath = input("Пожалуйста, задайте папку для работы с ней: ")
+#That's a variable which takes in folder path, provided by the user
+pathToCSV = input("Пожалуйста, введите имя файла для вывода данных в формате CSV: ")
+fOpen = open(pathToCSV, "w") #the file will be rewritten each time the script starts unless
+#another file name (+ path) is provided
+for root, folders, files in os.walk(myPath):
+    for file in files:
+        fullLine = ""
+        if ".fastq" in file:
+            fullPath = root + file
+            fileList = file.split("_")
+            print(fileList)
+            print(fileList[:-2])
+            ID = "_".join(fileList[:-2])
+            print(ID)
+            revOrFwd = ""
+            if fileList[-2] == "R2":
+                revOrFwd = "reverse"
+            else:
+                revOrFwd = "forward"
+            fullLine = ID + "," + fullPath + "," + revOrFwd + "\n"
+            fOpen.write(fullLine)
+fOpen.close()
